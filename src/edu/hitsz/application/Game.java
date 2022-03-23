@@ -1,9 +1,6 @@
 package edu.hitsz.application;
 
-import edu.hitsz.aircraft.AbstractAircraft;
-import edu.hitsz.aircraft.EliteEnemy;
-import edu.hitsz.aircraft.HeroAircraft;
-import edu.hitsz.aircraft.MobEnemy;
+import edu.hitsz.aircraft.*;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.AbstractBullet;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -37,7 +34,7 @@ public class Game extends JPanel {
     private int timeInterval = 40;
 
     private final HeroAircraft heroAircraft;
-    private final List<AbstractAircraft> enemyAircrafts;
+    private final List<AbstractEnemyAircraft> enemyAircrafts;
     private final List<AbstractBullet> heroBullets;
     private final List<AbstractBullet> enemyBullets;
 
@@ -165,8 +162,8 @@ public class Game extends JPanel {
     }
 
     private void shootAction() {
-        // TODO 敌机射击
-        for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+        //  敌机射击
+        for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
             enemyBullets.addAll(enemyAircraft.shoot());
         }
         // 英雄射击
@@ -183,7 +180,7 @@ public class Game extends JPanel {
     }
 
     private void aircraftsMoveAction() {
-        for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+        for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
             enemyAircraft.forward();
         }
     }
@@ -196,7 +193,7 @@ public class Game extends JPanel {
      * 3. 英雄获得补给
      */
     private void crashCheckAction() {
-        // TODO 敌机子弹攻击英雄
+        // 敌机子弹攻击英雄
         for (AbstractBullet bullet : enemyBullets) {
             if (bullet.notValid()) {
                 continue;
@@ -215,7 +212,7 @@ public class Game extends JPanel {
             if (bullet.notValid()) {
                 continue;
             }
-            for (AbstractAircraft enemyAircraft : enemyAircrafts) {
+            for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
                 if (enemyAircraft.notValid()) {
                     // 已被其他子弹击毁的敌机，不再检测
                     // 避免多个子弹重复击毁同一敌机的判定
