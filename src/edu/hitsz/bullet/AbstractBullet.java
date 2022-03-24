@@ -9,9 +9,9 @@ import edu.hitsz.basic.AbstractFlyingObject;
  *
  * @author hitsz
  */
-public class AbstractBullet extends AbstractFlyingObject {
+public abstract class AbstractBullet extends AbstractFlyingObject {
 
-    private int power = 10;
+    private int power;
 
     public AbstractBullet(int locationX, int locationY, int speedX, int speedY, int power) {
         super(locationX, locationY, speedX, speedY);
