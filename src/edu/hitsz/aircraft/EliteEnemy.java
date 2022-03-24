@@ -2,6 +2,7 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.bullet.AbstractBullet;
 import edu.hitsz.bullet.EnemyBullet;
+import edu.hitsz.prop.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,5 +30,25 @@ public class EliteEnemy extends AbstractEnemyAircraft {
 
         res.add(abstractBullet);
         return res;
+    }
+
+    @Override
+    public List<AbstarctProp> LeftProp() {
+        int temp = (int) (Math.random() * 8);
+        List<AbstarctProp> list = new LinkedList<>();
+        switch (temp) {
+            case 5:
+                list.add(new BloodProp(locationX, locationY, speedX, speedY / 5));
+                break;
+            case 6:
+                list.add(new BombProp(locationX, locationY, speedX, speedY / 5));
+                break;
+            case 7:
+                list.add(new BulletProp(locationX, locationY, speedX, speedY / 5));
+                break;
+            default:
+                break;
+        }
+        return list;
     }
 }
