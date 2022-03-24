@@ -1,80 +1,107 @@
 @startuml
-'https://plantuml.com/class-diagram
-
-abstract class AbstractFlyingObject
-{
-    # locationX:int
-    # locationY:int
-    # speedX:int
-    # speedY:int
-    # image:BufferedImage
-    # width:int
-    # height:int
-    # isValid:boolean
-
-    + FlyingObject(int locationX, int locationY, int speedX, int speedY):void
-    + forward():void
-    + crash(FlyingObject flyingObject):boolean
-    + setLocation(double locationX, double locationY):void
-    + getLocationX():int
-    + getLocationY():int
-    + getSpeedY():int
-    + getImage():BufferedImage
-    + getWidth():int
-    + getHeight():int
-    + notValid():boolean
-    + vanish():void
-}
-abstract class AbstractAircraft
-{
-	# axHp:int
-    # hp:int
-    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp):void
-    + decreaseHp(int decrease):void
-    + getHp():int
-    + {abstract} shoot():List<Bullet>
- }
-
-abstract class AbstractBullet
-{
-    - power:int
-    + Bullet(int locationX, int locationY, int speedX, int speedY, int power):void
-    + forward():void
-	+ getPower():int
+abstract class AbstractFlyingObject {
+# int locationX
+# int locationY
+# int speedX
+# int speedY
+# BufferedImage image
+# int width
+# int height
+# boolean isValid
++ void forward()
++ boolean crash(AbstractFlyingObject)
++ int getLocationX()
++ int getLocationY()
++ void setLocation(double,double)
++ int getSpeedY()
++ BufferedImage getImage()
++ int getWidth()
++ int getHeight()
++ boolean notValid()
++ void vanish()
 }
 
-AbstractFlyingObject <|-- AbstractAircraft
-AbstractFlyingObject <|-- AbstractBullet
+abstract class AbstractAircraft {
+# int maxHp
+# int hp
++ void decreaseHp(int)
++ void increaseHp(int)
++ int getHp()
++ {abstract}List<AbstractBullet> shoot()
+}
 
-AbstractAircraft <|-- HeroAircraft
-AbstractAircraft <|-- MobEnemy
+abstract class AbstractBullet {
+- int power
++ void forward()
++ int getPower()
+}
 
-AbstractBullet <|-- HeroBullet
-AbstractBullet <|-- EnemyBullet
+abstract class AbstarctProp {
++ {abstract}void takeEffect(HeroAircraft)
+}
 
-class HeroAircraft {
-    - shootNum:int
-    - power:int
-    - direction:int
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp):void
-    + forward():void
-    + shoot():List<Bullet>
+abstract class AbstractEnemyAircraft {
++ void forward()
++ {abstract}List<AbstarctProp> LeftProp()
 }
 
 class MobEnemy {
-    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp):void
-    + forward():void
-    + shoot():List<Bullet>
++ List<AbstractBullet> shoot()
++ List<AbstarctProp> LeftProp()
 }
 
-class HeroBullet {
-    + HeroBullet(int locationX, int locationY,
-     int speedX, int speedY, int power):void
+class EliteEnemy {
+- int shootNum
+- int power
+- int direction
++ List<AbstractBullet> shoot()
++ List<AbstarctProp> LeftProp()
+}
+
+class HeroAircraft {
+- int shootNum
+- int power
+- int direction
++ void forward()
++ List<AbstractBullet> shoot()
 }
 
 class EnemyBullet {
-    + EnemyBullet(int locationX, int locationY,
-     int speedX, int speedY, int power):void
 }
+
+class HeroBullet {
+}
+
+class BulletProp {
++ void takeEffect(HeroAircraft)
+}
+
+class BombProp {
++ void takeEffect(HeroAircraft)
+}
+
+class BloodProp {
++ void takeEffect(HeroAircraft)
+}
+
+
+
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractFlyingObject <|-- AbstractBullet
+AbstractFlyingObject <|-- AbstarctProp
+
+AbstractAircraft <|-- AbstractEnemyAircraft
+AbstractEnemyAircraft <|-- MobEnemy
+AbstractEnemyAircraft <|-- EliteEnemy
+
+AbstractAircraft <|-- HeroAircraft
+
+AbstractBullet <|-- EnemyBullet
+AbstractBullet <|-- HeroBullet
+
+AbstarctProp <|-- BulletProp
+AbstarctProp <|-- BombProp
+AbstarctProp <|-- BloodProp
+
 
 @enduml
