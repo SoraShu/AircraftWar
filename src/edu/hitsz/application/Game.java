@@ -3,6 +3,8 @@ package edu.hitsz.application;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.AbstractBullet;
+import edu.hitsz.factory.EliteEnemyFactory;
+import edu.hitsz.factory.MobEnemyFactory;
 import edu.hitsz.prop.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -39,6 +41,9 @@ public class Game extends JPanel {
     private final List<AbstractBullet> heroBullets;
     private final List<AbstractBullet> enemyBullets;
     private final List<AbstarctProp> allProps;
+
+    private final MobEnemyFactory mobEnemyFactory = new MobEnemyFactory();
+    private final EliteEnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
 
     private int enemyMaxNumber = 5;
 
@@ -91,7 +96,7 @@ public class Game extends JPanel {
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     int ran = (int) (Math.random() * 2);
                     if (ran <= 0) {
-                        enemyAircrafts.add(new MobEnemy(
+                        enemyAircrafts.add(mobEnemyFactory.createEnemyAircraft(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
                                 0,
@@ -100,7 +105,7 @@ public class Game extends JPanel {
                         ));
                     } else {
                         //System.out.println("elite");
-                        enemyAircrafts.add(new EliteEnemy(
+                        enemyAircrafts.add(eliteEnemyFactory.createEnemyAircraft(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
                                 0,
