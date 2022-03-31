@@ -37,9 +37,9 @@ public class EliteEnemy extends AbstractEnemyAircraft {
     }
 
     @Override
-    public List<AbstarctProp> LeftProp() {
+    public List<AbstractProp> LeftProp() {
         int temp = (int) (Math.random() * 8);
-        List<AbstarctProp> list = new LinkedList<>();
+        List<AbstractProp> list = new LinkedList<>();
         PropFactory propfactory = null;
         switch (temp) {
             case 5:

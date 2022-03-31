@@ -40,7 +40,7 @@ public class Game extends JPanel {
     private final List<AbstractEnemyAircraft> enemyAircrafts;
     private final List<AbstractBullet> heroBullets;
     private final List<AbstractBullet> enemyBullets;
-    private final List<AbstarctProp> allProps;
+    private final List<AbstractProp> allProps;
 
     private final MobEnemyFactory mobEnemyFactory = new MobEnemyFactory();
     private final EliteEnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
@@ -194,7 +194,7 @@ public class Game extends JPanel {
     }
 
     private void propsMoveAction() {
-        for (AbstarctProp prop : allProps) {
+        for (AbstractProp prop : allProps) {
             prop.forward();
         }
     }
@@ -253,7 +253,7 @@ public class Game extends JPanel {
         }
 
         // 我方获得道具，道具生效
-        for (AbstarctProp prop : allProps) {
+        for (AbstractProp prop : allProps) {
             if (prop.notValid()) {
                 continue;
             }

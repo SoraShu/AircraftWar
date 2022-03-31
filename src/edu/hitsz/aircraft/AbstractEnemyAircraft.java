@@ -1,7 +1,7 @@
 package edu.hitsz.aircraft;
 
 import edu.hitsz.application.Main;
-import edu.hitsz.prop.AbstarctProp;
+import edu.hitsz.prop.AbstractProp;
 
 import java.util.List;
 
@@ -19,5 +19,5 @@ public abstract class AbstractEnemyAircraft extends AbstractAircraft{
         }
     }
 
-    public abstract List<AbstarctProp> LeftProp();
+    public abstract List<AbstractProp> LeftProp();
 }

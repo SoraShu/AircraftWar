@@ -2,7 +2,7 @@ package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.HeroAircraft;
 
-public class BulletProp extends AbstarctProp {
+public class BulletProp extends AbstractProp {
     public BulletProp(int locationX, int locationY, int speedX, int speedY) {
         super(locationX, locationY, speedX, speedY);
     }
