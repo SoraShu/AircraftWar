@@ -1,0 +1,54 @@
+@startuml PropFactory
+left to right direction
+
+interface PropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+
+together {
+class BulletPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+
+class BloodPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+
+class BombPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+}
+
+
+
+abstract class AbstractProp {
++ {abstract}void takeEffect(HeroAircraft)
+}
+together {
+class BulletProp {
++ void takeEffect(HeroAircraft)
+}
+
+class BombProp {
++ void takeEffect(HeroAircraft)
+}
+
+class BloodProp {
++ void takeEffect(HeroAircraft)
+}
+
+
+
+BombProp --|> AbstractProp
+BloodProp --|> AbstractProp
+BulletProp --|> AbstractProp
+
+PropFactory <|-- BulletPropFactory
+PropFactory <|-- BombPropFactory
+PropFactory <|-- BloodPropFactory
+BombPropFactory::AbstractProp ..> BombProp
+BloodPropFactory::AbstractProp  ..> BloodProp
+BulletPropFactory::AbstractProp  ..> BulletProp
+
+
+@enduml

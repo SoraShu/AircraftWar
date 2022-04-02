@@ -1,0 +1,151 @@
+@startuml v2.0
+
+abstract class AbstractFlyingObject {
+# int locationX
+# int locationY
+# int speedX
+# int speedY
+# BufferedImage image
+# int width
+# int height
+# boolean isValid
++ void forward()
++ boolean crash(AbstractFlyingObject)
++ int getLocationX()
++ int getLocationY()
++ void setLocation(double,double)
++ int getSpeedY()
++ BufferedImage getImage()
++ int getWidth()
++ int getHeight()
++ boolean notValid()
++ void vanish()
+}
+
+abstract class AbstractAircraft {
+# int maxHp
+# int hp
++ void decreaseHp(int)
++ void increaseHp(int)
++ int getHp()
++ {abstract}List<AbstractBullet> shoot()
+}
+
+class HeroAircraft {
+- int shootNum
+- int power
+- int direction
+- {static} HeroAircraft heroAircraft
++ {static} HeroAircraft getHeroAircraft()
++ void forward()
++ List<AbstractBullet> shoot()
+}
+
+together {
+
+abstract class AbstractEnemyAircraft {
++ void forward()
++ {abstract}List<AbstractProp> LeftProp()
+}
+
+class MobEnemy {
++ List<AbstractBullet> shoot()
++ List<AbstractProp> LeftProp()
+}
+
+class EliteEnemy {
+- int shootNum
+- int power
+- int direction
++ List<AbstractBullet> shoot()
++ List<AbstractProp> LeftProp()
+}
+
+interface EnemyFactory {
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+
+class EliteEnemyFactory {
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+
+class MobEnemyFactory {
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+
+}
+
+
+together {
+
+
+
+abstract class AbstractProp {
++ {abstract}void takeEffect(HeroAircraft)
+}
+together {
+class BulletProp {
++ void takeEffect(HeroAircraft)
+}
+
+class BombProp {
++ void takeEffect(HeroAircraft)
+}
+
+class BloodProp {
++ void takeEffect(HeroAircraft)
+}
+
+}
+
+interface PropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+
+together {
+class BulletPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+
+class BloodPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+
+class BombPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+
+}
+
+
+
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractAircraft <|-- AbstractEnemyAircraft
+AbstractEnemyAircraft <|-- MobEnemy
+AbstractEnemyAircraft <|-- EliteEnemy
+
+EnemyFactory <|-- EliteEnemyFactory
+EnemyFactory <|-- MobEnemyFactory
+
+MobEnemyFactory ..> MobEnemy
+EliteEnemyFactory ..> EliteEnemy
+
+
+AbstractFlyingObject <|-- AbstractProp
+AbstractProp <|-- BombProp
+AbstractProp <|-- BloodProp
+AbstractProp <|-- BulletProp
+
+PropFactory <|-- BulletPropFactory
+PropFactory <|-- BombPropFactory
+PropFactory <|-- BloodPropFactory
+BombPropFactory ..> BombProp
+BloodPropFactory ..> BloodProp
+BulletPropFactory ..> BulletProp
+
+
+AbstractAircraft <|-- HeroAircraft
+
+
+HeroAircraft <-- HeroAircraft
+@enduml

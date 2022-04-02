@@ -1,0 +1,58 @@
+@startuml EnemyFactory
+left to right direction
+
+abstract class AbstractEnemyAircraft {
++ void forward()
++ {abstract}List<AbstractProp> LeftProp()
+}
+
+class MobEnemy {
++ List<AbstractBullet> shoot()
++ List<AbstractProp> LeftProp()
+}
+
+class EliteEnemy {
+- int shootNum
+- int power
+- int direction
++ List<AbstractBullet> shoot()
++ List<AbstractProp> LeftProp()
+}
+
+class BossEnemy {
+- int shootNum
+- int power
+- int direction
++ List<AbstractBullet> Shoot()
++ List<abstractProp> LeftProp()
+}
+
+interface EnemyFactory {
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+
+class EliteEnemyFactory {
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+
+class MobEnemyFactory {
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+
+class BossEnemyFactory {
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+
+EnemyFactory <|-- EliteEnemyFactory
+EnemyFactory <|-- MobEnemyFactory
+EnemyFactory <|-- BossEnemyFactory
+
+MobEnemy --|> AbstractEnemyAircraft
+EliteEnemy --|> AbstractEnemyAircraft
+BossEnemy --|> AbstractEnemyAircraft
+
+MobEnemyFactory::AbstractEnemyAircraft ..> MobEnemy
+EliteEnemyFactory::AbstractEnemyAircraft ..> EliteEnemy
+BossEnemyFactory::AbstractEnemyAircraft ..> BossEnemy
+
+@enduml

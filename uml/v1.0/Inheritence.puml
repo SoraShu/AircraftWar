@@ -1,4 +1,4 @@
-@startuml
+@startuml Inheritence
 abstract class AbstractFlyingObject {
 # int locationX
 # int locationY
@@ -36,18 +36,18 @@ abstract class AbstractBullet {
 + int getPower()
 }
 
-abstract class AbstarctProp {
+abstract class AbstractProp {
 + {abstract}void takeEffect(HeroAircraft)
 }
 
 abstract class AbstractEnemyAircraft {
 + void forward()
-+ {abstract}List<AbstarctProp> LeftProp()
++ {abstract}List<AbstractProp> LeftProp()
 }
 
 class MobEnemy {
 + List<AbstractBullet> shoot()
-+ List<AbstarctProp> LeftProp()
++ List<AbstractProp> LeftProp()
 }
 
 class EliteEnemy {
@@ -55,7 +55,7 @@ class EliteEnemy {
 - int power
 - int direction
 + List<AbstractBullet> shoot()
-+ List<AbstarctProp> LeftProp()
++ List<AbstractProp> LeftProp()
 }
 
 class HeroAircraft {
@@ -88,7 +88,7 @@ class BloodProp {
 
 AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- AbstractBullet
-AbstractFlyingObject <|-- AbstarctProp
+AbstractFlyingObject <|-- AbstractProp
 
 AbstractAircraft <|-- AbstractEnemyAircraft
 AbstractEnemyAircraft <|-- MobEnemy
@@ -99,9 +99,9 @@ AbstractAircraft <|-- HeroAircraft
 AbstractBullet <|-- EnemyBullet
 AbstractBullet <|-- HeroBullet
 
-AbstarctProp <|-- BulletProp
-AbstarctProp <|-- BombProp
-AbstarctProp <|-- BloodProp
+AbstractProp <|-- BulletProp
+AbstractProp <|-- BombProp
+AbstractProp <|-- BloodProp
 
 
 @enduml

@@ -1,0 +1,32 @@
+@startuml HeroAirCraft
+
+abstract class AbstractFlyingObject {
+...
+...()
+}
+
+abstract class AbstractAircraft {
+...
+...()
+}
+
+
+class HeroAircraft {
+...
+- {static} HeroAircraft heroAircraft
+...()
+- HeroAircraft()
++ {static} HeroAircraft getHeroAircraft()
+}
+
+class Game {
+...
+...()
+}
+
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractAircraft <|-- HeroAircraft
+HeroAircraft <-- HeroAircraft
+
+HeroAircraft <-l- Game
+@enduml
