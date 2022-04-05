@@ -2,6 +2,9 @@ package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.HeroAircraft;
 
+/**
+ * @author SoraShu
+ */
 public class BloodProp extends AbstractProp {
 
     public BloodProp(int locationX, int locationY, int speedX, int speedY) {

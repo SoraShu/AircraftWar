@@ -1,11 +1,12 @@
 package edu.hitsz.application;
 
-import edu.hitsz.aircraft.*;
+import edu.hitsz.aircraft.AbstractEnemyAircraft;
+import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.AbstractBullet;
 import edu.hitsz.factory.EliteEnemyFactory;
 import edu.hitsz.factory.MobEnemyFactory;
-import edu.hitsz.prop.*;
+import edu.hitsz.prop.AbstractProp;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -94,7 +96,8 @@ public class Game extends JPanel {
                 System.out.println(time);
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
-                    int ran = (int) (Math.random() * 2);
+                    Random rnd = new Random();
+                    int ran = rnd.nextInt(2);
                     if (ran <= 0) {
                         enemyAircrafts.add(mobEnemyFactory.createEnemyAircraft(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
@@ -240,7 +243,7 @@ public class Game extends JPanel {
                     if (enemyAircraft.notValid()) {
                         // 获得分数，产生道具补给
                         score += 10;
-                        allProps.addAll(enemyAircraft.LeftProp());
+                        allProps.addAll(enemyAircraft.leftProp());
 
                     }
                 }

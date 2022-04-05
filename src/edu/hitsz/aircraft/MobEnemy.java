@@ -24,7 +24,7 @@ public class MobEnemy extends AbstractEnemyAircraft {
     }
 
     @Override
-    public List<AbstractProp> LeftProp() {
+    public List<AbstractProp> leftProp() {
         return new LinkedList<>();
     }
 }

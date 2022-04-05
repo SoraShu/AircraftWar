@@ -3,6 +3,9 @@ package edu.hitsz.factory;
 import edu.hitsz.prop.AbstractProp;
 import edu.hitsz.prop.BloodProp;
 
+/**
+ * @author SoraShu
+ */
 public class BloodPropFactory implements PropFactory {
 
     @Override

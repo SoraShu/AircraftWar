@@ -6,11 +6,15 @@ import edu.hitsz.factory.BloodPropFactory;
 import edu.hitsz.factory.BombPropFactory;
 import edu.hitsz.factory.BulletPropFactory;
 import edu.hitsz.factory.PropFactory;
-import edu.hitsz.prop.*;
+import edu.hitsz.prop.AbstractProp;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
+/**
+ * @author SoraShu
+ */
 public class EliteEnemy extends AbstractEnemyAircraft {
 
     private int shootNum = 1;
@@ -37,8 +41,9 @@ public class EliteEnemy extends AbstractEnemyAircraft {
     }
 
     @Override
-    public List<AbstractProp> LeftProp() {
-        int temp = (int) (Math.random() * 8);
+    public List<AbstractProp> leftProp() {
+        Random rnd = new Random();
+        int temp = rnd.nextInt(8);
         List<AbstractProp> list = new LinkedList<>();
         PropFactory propfactory = null;
         switch (temp) {

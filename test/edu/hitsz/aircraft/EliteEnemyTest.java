@@ -53,7 +53,7 @@ class EliteEnemyTest {
     @RepeatedTest(10)
     @DisplayName("Test leftProp")
     void leftProp() {
-        List<AbstractProp> list = instance.LeftProp();
+        List<AbstractProp> list = instance.leftProp();
         System.out.println(list);
         assertTrue(list.size()==1||list.isEmpty());
     }

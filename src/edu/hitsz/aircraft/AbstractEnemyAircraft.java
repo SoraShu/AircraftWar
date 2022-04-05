@@ -5,7 +5,10 @@ import edu.hitsz.prop.AbstractProp;
 
 import java.util.List;
 
-public abstract class AbstractEnemyAircraft extends AbstractAircraft{
+/**
+ * @author SoraShu
+ */
+public abstract class AbstractEnemyAircraft extends AbstractAircraft {
     public AbstractEnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
     }
@@ -19,5 +22,10 @@ public abstract class AbstractEnemyAircraft extends AbstractAircraft{
         }
     }
 
-    public abstract List<AbstractProp> LeftProp();
+    /**
+     * 敌机死亡后生成道具
+     *
+     * @return List<AbstractProp>
+     */
+    public abstract List<AbstractProp> leftProp();
 }
