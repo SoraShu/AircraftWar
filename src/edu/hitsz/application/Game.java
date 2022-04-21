@@ -4,7 +4,9 @@ import edu.hitsz.aircraft.AbstractEnemyAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.AbstractBullet;
+import edu.hitsz.factory.BossEnemyFactory;
 import edu.hitsz.factory.EliteEnemyFactory;
+import edu.hitsz.factory.EnemyFactory;
 import edu.hitsz.factory.MobEnemyFactory;
 import edu.hitsz.prop.AbstractProp;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -40,18 +42,20 @@ public class Game extends JPanel {
 
     private final HeroAircraft heroAircraft;
     private final List<AbstractEnemyAircraft> enemyAircrafts;
+    private final List<AbstractEnemyAircraft> bossAircrafts;
     private final List<AbstractBullet> heroBullets;
     private final List<AbstractBullet> enemyBullets;
     private final List<AbstractProp> allProps;
 
-    private final MobEnemyFactory mobEnemyFactory = new MobEnemyFactory();
-    private final EliteEnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
-
+    private final EnemyFactory mobEnemyFactory = new MobEnemyFactory();
+    private final EnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
+    private final EnemyFactory bossEnemyFactory = new BossEnemyFactory();
     private int enemyMaxNumber = 5;
 
     private boolean gameOverFlag = false;
     private int score = 0;
     private int time = 0;
+    private int bossCounter = 0;
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
@@ -64,6 +68,7 @@ public class Game extends JPanel {
         heroAircraft = HeroAircraft.getHeroAircraft();
 
         enemyAircrafts = new LinkedList<>();
+        bossAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         allProps = new LinkedList<>();
@@ -97,8 +102,8 @@ public class Game extends JPanel {
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     Random rnd = new Random();
-                    int ran = rnd.nextInt(2);
-                    if (ran <= 0) {
+                    int ran = rnd.nextInt(5);
+                    if (ran <= 3) {
                         enemyAircrafts.add(mobEnemyFactory.createEnemyAircraft(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
@@ -111,11 +116,21 @@ public class Game extends JPanel {
                         enemyAircrafts.add(eliteEnemyFactory.createEnemyAircraft(
                                 (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
                                 (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
-                                0,
-                                10,
+                                5,
+                                5,
                                 30
                         ));
                     }
+                }
+                if (bossCounter > 0 && bossAircrafts.size() == 0) {
+                    bossAircrafts.add(bossEnemyFactory.createEnemyAircraft(
+                            (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
+                            (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
+                            10,
+                            0,
+                            200
+                    ));
+                    bossCounter--;
                 }
                 // 飞机射出子弹
                 shootAction();
@@ -177,6 +192,10 @@ public class Game extends JPanel {
         for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
             enemyBullets.addAll(enemyAircraft.shoot());
         }
+        // boss射击
+        for (AbstractEnemyAircraft bossAircraft : bossAircrafts) {
+            enemyBullets.addAll(bossAircraft.shoot());
+        }
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
     }
@@ -193,6 +212,9 @@ public class Game extends JPanel {
     private void aircraftsMoveAction() {
         for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
             enemyAircraft.forward();
+        }
+        for (AbstractEnemyAircraft bossAircraft : bossAircrafts) {
+            bossAircraft.forward();
         }
     }
 
@@ -226,6 +248,7 @@ public class Game extends JPanel {
 
         // 英雄子弹攻击敌机
         for (AbstractBullet bullet : heroBullets) {
+            int preScore = score;
             if (bullet.notValid()) {
                 continue;
             }
@@ -252,6 +275,28 @@ public class Game extends JPanel {
                     enemyAircraft.vanish();
                     heroAircraft.decreaseHp(Integer.MAX_VALUE);
                 }
+            }
+
+            for (AbstractEnemyAircraft bossAircraft : bossAircrafts) {
+                if (bossAircraft.notValid()) {
+                    continue;
+                }
+                if (bossAircraft.crash(bullet)) {
+                    bossAircraft.decreaseHp(bullet.getPower());
+                    bullet.vanish();
+                    if (bossAircraft.notValid()) {
+                        score += 50;
+                        allProps.addAll(bossAircraft.leftProp());
+                    }
+                }
+                // 英雄机 与 boss 相撞
+                if (bossAircraft.crash(heroAircraft) || heroAircraft.crash(bossAircraft)) {
+                    bossAircraft.vanish();
+                    heroAircraft.decreaseHp(Integer.MAX_VALUE);
+                }
+            }
+            if (preScore / 300 < score / 300) {
+                bossCounter++;
             }
         }
 
@@ -283,6 +328,7 @@ public class Game extends JPanel {
         enemyBullets.removeIf(AbstractFlyingObject::notValid);
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
+        bossAircrafts.removeIf(AbstractFlyingObject::notValid);
         allProps.removeIf(AbstractFlyingObject::notValid);
     }
 
@@ -315,6 +361,7 @@ public class Game extends JPanel {
         paintImageWithPositionRevised(g, heroBullets);
 
         paintImageWithPositionRevised(g, enemyAircrafts);
+        paintImageWithPositionRevised(g, bossAircrafts);
 
         paintImageWithPositionRevised(g, allProps);
 
