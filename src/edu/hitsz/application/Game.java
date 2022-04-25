@@ -248,56 +248,12 @@ public class Game extends JPanel {
 
         // 英雄子弹攻击敌机
         for (AbstractBullet bullet : heroBullets) {
-            int preScore = score;
-            if (bullet.notValid()) {
+            // 子弹攻击 Mob or Elite
+            if (shootEnemy(bullet, enemyAircrafts)) {
                 continue;
             }
-            for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
-                if (enemyAircraft.notValid()) {
-                    // 已被其他子弹击毁的敌机，不再检测
-                    // 避免多个子弹重复击毁同一敌机的判定
-                    continue;
-                }
-                if (enemyAircraft.crash(bullet)) {
-                    // 敌机撞击到英雄机子弹
-                    // 敌机损失一定生命值
-                    enemyAircraft.decreaseHp(bullet.getPower());
-                    bullet.vanish();
-                    if (enemyAircraft.notValid()) {
-                        // 获得分数，产生道具补给
-                        score += 10;
-                        allProps.addAll(enemyAircraft.leftProp());
-
-                    }
-                }
-                // 英雄机 与 敌机 相撞，均损毁
-                if (enemyAircraft.crash(heroAircraft) || heroAircraft.crash(enemyAircraft)) {
-                    enemyAircraft.vanish();
-                    heroAircraft.decreaseHp(Integer.MAX_VALUE);
-                }
-            }
-
-            for (AbstractEnemyAircraft bossAircraft : bossAircrafts) {
-                if (bossAircraft.notValid()) {
-                    continue;
-                }
-                if (bossAircraft.crash(bullet)) {
-                    bossAircraft.decreaseHp(bullet.getPower());
-                    bullet.vanish();
-                    if (bossAircraft.notValid()) {
-                        score += 50;
-                        allProps.addAll(bossAircraft.leftProp());
-                    }
-                }
-                // 英雄机 与 boss 相撞
-                if (bossAircraft.crash(heroAircraft) || heroAircraft.crash(bossAircraft)) {
-                    bossAircraft.vanish();
-                    heroAircraft.decreaseHp(Integer.MAX_VALUE);
-                }
-            }
-            if (preScore / 300 < score / 300) {
-                bossCounter++;
-            }
+            // 子弹攻击 Boss
+            shootEnemy(bullet, bossAircrafts);
         }
 
         // 我方获得道具，道具生效
@@ -314,6 +270,44 @@ public class Game extends JPanel {
             }
         }
 
+    }
+
+    /**
+     * 子弹射向敌机
+     *
+     * @param bullet         子弹
+     * @param enemyAircrafts 敌机表
+     * @return 跳过循环？
+     */
+    private boolean shootEnemy(AbstractBullet bullet, List<AbstractEnemyAircraft> enemyAircrafts) {
+        if (bullet.notValid()) {
+            return true;
+        }
+
+        for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
+            int preScore = score;
+            if (enemyAircraft.notValid()) {
+                continue;
+            }
+            if (enemyAircraft.crash(bullet)) {
+                enemyAircraft.decreaseHp(bullet.getPower());
+                bullet.vanish();
+                if (enemyAircraft.notValid()) {
+                    score += enemyAircraft.getScore();
+                    allProps.addAll(enemyAircraft.leftProp());
+                }
+            }
+            // 英雄机 与 敌机相撞
+            if (enemyAircraft.crash(heroAircraft) || heroAircraft.crash(enemyAircraft)) {
+                enemyAircraft.vanish();
+                heroAircraft.decreaseHp(Integer.MAX_VALUE);
+            }
+            if (preScore / 300 < score / 300) {
+                bossCounter++;
+                System.out.println("count:" + bossCounter);
+            }
+        }
+        return false;
     }
 
     /**

@@ -9,8 +9,15 @@ import java.util.List;
  * @author SoraShu
  */
 public abstract class AbstractEnemyAircraft extends AbstractAircraft {
+
+    protected int score;
+
     public AbstractEnemyAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
+    }
+
+    public int getScore() {
+        return score;
     }
 
     @Override

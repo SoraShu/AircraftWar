@@ -23,6 +23,7 @@ public class EliteEnemy extends AbstractEnemyAircraft {
 
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
+        score = 20;
     }
 
     @Override

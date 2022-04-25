@@ -25,6 +25,7 @@ public class BossEnemy extends AbstractEnemyAircraft {
 
     public BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
+        score = 100;
     }
 
     @Override
