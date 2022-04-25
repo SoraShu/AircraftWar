@@ -4,6 +4,8 @@ import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.AbstractBullet;
 import edu.hitsz.bullet.HeroBullet;
+import edu.hitsz.strategy.ScatterShoot;
+import edu.hitsz.strategy.StraightShoot;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,17 +22,17 @@ public class HeroAircraft extends AbstractAircraft {
     /**
      * 子弹一次发射数量
      */
-    private int shootNum = 1;
+//    private int shootNum = 1;
 
     /**
      * 子弹伤害
      */
-    private int power = 30;
+//    private int power = 30;
 
     /**
      * 子弹射击方向 (向上发射：1，向下发射：-1)
      */
-    private int direction = -1;
+//    private int direction = -1;
 
     private volatile static HeroAircraft heroAircraft;
 
@@ -43,6 +45,10 @@ public class HeroAircraft extends AbstractAircraft {
      */
     private HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
+        shootNum = 1;
+        power = 30;
+        direction = -1;
+        this.setShootStrategy(new StraightShoot());
     }
 
 
@@ -70,21 +76,21 @@ public class HeroAircraft extends AbstractAircraft {
      *
      * @return 射击出的子弹List
      */
-    @Override
-    public List<AbstractBullet> shoot() {
-        List<AbstractBullet> res = new LinkedList<>();
-        int x = this.getLocationX();
-        int y = this.getLocationY() + direction * 2;
-        int speedX = 0;
-        int speedY = this.getSpeedY() + direction * 10;
-        AbstractBullet abstractBullet;
-        for (int i = 0; i < shootNum; i++) {
-            // 子弹发射位置相对飞机位置向前偏移
-            // 多个子弹横向分散
-            abstractBullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y, speedX, speedY, power);
-            res.add(abstractBullet);
-        }
-        return res;
-    }
+//    @Override
+//    public List<AbstractBullet> shoot() {
+//        List<AbstractBullet> res = new LinkedList<>();
+//        int x = this.getLocationX();
+//        int y = this.getLocationY() + direction * 2;
+//        int speedX = 0;
+//        int speedY = this.getSpeedY() + direction * 10;
+//        AbstractBullet abstractBullet;
+//        for (int i = 0; i < shootNum; i++) {
+//            // 子弹发射位置相对飞机位置向前偏移
+//            // 多个子弹横向分散
+//            abstractBullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y, speedX, speedY, power);
+//            res.add(abstractBullet);
+//        }
+//        return res;
+//    }
 
 }

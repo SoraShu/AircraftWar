@@ -1,8 +1,11 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.bullet.AbstractBullet;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,9 +43,15 @@ class HeroAircraftTest {
     void forward() {
         int lastLocationY = instance.getLocationY();
         instance.forward();
-        assertEquals(lastLocationY+instance.getSpeedY(),instance.getLocationY());
+        assertEquals(lastLocationY + instance.getSpeedY(), instance.getLocationY());
     }
 
+    @RepeatedTest(10)
+    @DisplayName("Test method shoot")
+    void shoot() {
+        List<AbstractBullet> res = instance.shoot();
+        System.out.println(res);
+    }
 
 
 }

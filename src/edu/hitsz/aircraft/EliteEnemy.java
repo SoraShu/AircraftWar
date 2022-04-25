@@ -7,6 +7,8 @@ import edu.hitsz.factory.BombPropFactory;
 import edu.hitsz.factory.BulletPropFactory;
 import edu.hitsz.factory.PropFactory;
 import edu.hitsz.prop.AbstractProp;
+import edu.hitsz.strategy.Shoot;
+import edu.hitsz.strategy.StraightShoot;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,29 +19,34 @@ import java.util.Random;
  */
 public class EliteEnemy extends AbstractEnemyAircraft {
 
-    private int shootNum = 1;
-    private int power = 30;
-    private int direction = 1;
+//    private int shootNum = 1;
+//    private int power = 30;
+//    private int direction = 1;
 
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
         score = 20;
+        shootNum = 1;
+        power = 30;
+        direction = 1;
+        this.setShootStrategy(new StraightShoot());
     }
 
-    @Override
-    public List<AbstractBullet> shoot() {
-        List<AbstractBullet> res = new LinkedList<>();
-        int x = this.getLocationX();
-        int y = this.getLocationY() + direction * 2;
-        int speedX = 0;
-        int speedY = this.getSpeedY() + direction * 5;
-        AbstractBullet abstractBullet;
-
-        abstractBullet = new EnemyBullet(x, y, speedX, speedY, power);
-
-        res.add(abstractBullet);
-        return res;
-    }
+//    @Override
+//    public List<AbstractBullet> shoot() {
+//        List<AbstractBullet> res = new LinkedList<>();
+//        int x = this.getLocationX();
+//        int y = this.getLocationY() + direction * 2;
+//        int speedX = 0;
+//        int speedY = this.getSpeedY() + direction * 5;
+//        AbstractBullet abstractBullet;
+//
+//        abstractBullet = new EnemyBullet(x, y, speedX, speedY, power);
+//
+//        res.add(abstractBullet);
+//        return res;
+////        return this.executeShootStrategy().doShootAction(this);
+//    }
 
     @Override
     public List<AbstractProp> leftProp() {
