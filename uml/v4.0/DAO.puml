@@ -1,0 +1,39 @@
+@startuml
+class Round {
+- {static} long serialVersionUID
+- int id
+- String playTime
+- String playerName
+- int finalScore
++ int getId()
++ String getPlayTime()
++ String getPlayerName()
++ int getFinalScore()
++ String toString()
+}
+class Game {
+}
+class RoundDaoImpl {
+- File file
+- List<Round> rounds
++ void writeToFile()
++ void addRound(Round)
++ void addRound(Round,boolean)
++ List<Round> getAllRounds()
++ List<Round> getSortedRounds()
++ Round getRound(int)
++ void delRound(int)
+}
+interface RoundDao {
+~ void addRound(Round)
+~ List<Round> getAllRounds()
+~ List<Round> getSortedRounds()
+~ Round getRound(int)
+~ void delRound(int)
+}
+
+Game .r.> RoundDao
+RoundDao <|.. RoundDaoImpl
+Round <-r- RoundDaoImpl
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+interface Shoot {
+~ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+class StraightShoot {
++ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+abstract class AbstractAircraft {
+# Shoot shootStrategy
++ Shoot executeShootStrategy()
++ void setShootStrategy(Shoot)
++ List<AbstractBullet> shoot()
+}
+class NullShoot {
++ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+class ScatterShoot {
++ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+
+
+Shoot <|.. StraightShoot
+Shoot <|.. NullShoot
+Shoot <|.. ScatterShoot
+AbstractAircraft o--> Shoot
+@enduml
