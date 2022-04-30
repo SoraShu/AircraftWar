@@ -45,4 +45,11 @@ public interface RoundDao {
      */
     void delRound(int id);
 
+    /**
+     * 删
+     *
+     * @param round round object
+     */
+    void delRound(Round round);
+
 }

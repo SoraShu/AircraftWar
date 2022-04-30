@@ -57,11 +57,15 @@ public class Game extends JPanel {
     private int enemyMaxNumber = 5;
 
     private boolean gameOverFlag = false;
+
+    public int getScore() {
+        return score;
+    }
+
     private int score = 0;
     private int time = 0;
     private int bossCounter = 0;
     private String FilePath = "./data.ser";
-    private RoundDao roundDao;
     private Round thisRound;
     private List<Round> rounds;
 
@@ -169,8 +173,10 @@ public class Game extends JPanel {
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
-                printLeaderboard();
-
+//                printLeaderboard();
+                synchronized (Main.lock) {
+                    Main.lock.notify();
+                }
             }
 
         };
@@ -342,14 +348,14 @@ public class Game extends JPanel {
         System.out.println("********************************************************");
         System.out.println("*                     leaderboard                      *");
         System.out.println("********************************************************");
-        try {
-            roundDao = new RoundDaoImpl(FilePath);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            roundDao = new RoundDaoImpl(FilePath);
+//        } catch (IOException | ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
         thisRound = new Round("testUserName", score);
-        roundDao.addRound(thisRound);
-        rounds = roundDao.getSortedRounds();
+        Main.roundDao.addRound(thisRound);
+        rounds = Main.roundDao.getSortedRounds();
         int i = 1;
         for (Round round : rounds) {
             System.out.println("第 " + String.format("%2d", i) + " 名: " + round.toString());

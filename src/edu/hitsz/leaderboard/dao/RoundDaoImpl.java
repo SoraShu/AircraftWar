@@ -87,7 +87,17 @@ public class RoundDaoImpl implements RoundDao {
 
     @Override
     public void delRound(int id) {
-        rounds.removeIf(s ->s.getId() == id);
+        rounds.removeIf(s -> s.getId() == id);
+        try {
+            writeToFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delRound(Round round) {
+        rounds.remove(round);
         try {
             writeToFile();
         } catch (IOException e) {
