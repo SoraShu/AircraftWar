@@ -9,6 +9,9 @@ import edu.hitsz.factory.HeroBulletFactory;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author SoraShu
+ */
 public class StraightShoot implements Shoot {
     @Override
     public List<AbstractBullet> doShootAction(AbstractAircraft aircraft) {

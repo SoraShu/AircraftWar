@@ -6,6 +6,9 @@ import edu.hitsz.bullet.AbstractBullet;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author SoraShu
+ */
 public class NullShoot implements Shoot {
 
     @Override

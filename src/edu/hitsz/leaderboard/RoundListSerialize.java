@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author SoraShu
+ */
 public class RoundListSerialize {
     public static void ser(File file, List<Round> rounds) throws IOException {
         OutputStream os = new FileOutputStream(file);
@@ -18,6 +21,8 @@ public class RoundListSerialize {
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         var listOfRounds = List.of((Round[]) ois.readObject());
+        ois.close();
+        fis.close();
         return new ArrayList<>(listOfRounds);
     }
 }

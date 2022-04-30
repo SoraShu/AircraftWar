@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * @author SoraShu
+ */
 public class RoundDaoImpl implements RoundDao {
 
     private File file;
@@ -81,6 +84,7 @@ public class RoundDaoImpl implements RoundDao {
         System.err.println("Round not found!");
         return null;
     }
+
     @Override
     public void delRound(int id) {
         rounds.removeIf(s ->s.getId() == id);

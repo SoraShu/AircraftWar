@@ -2,6 +2,9 @@ package edu.hitsz.leaderboard;
 
 import java.io.Serializable;
 
+/**
+ * @author SoraShu
+ */
 public class Round implements Serializable {
     private static final long serialVersionUID = 1145141919810L;
 
