@@ -1,6 +1,7 @@
 package edu.hitsz.bullet;
 
 import edu.hitsz.application.Main;
+import edu.hitsz.application.music.MusicManager;
 import edu.hitsz.basic.AbstractFlyingObject;
 
 /**
@@ -16,6 +17,12 @@ public abstract class AbstractBullet extends AbstractFlyingObject {
     public AbstractBullet(int locationX, int locationY, int speedX, int speedY, int power) {
         super(locationX, locationY, speedX, speedY);
         this.power = power;
+    }
+
+    @Override
+    public void vanish() {
+        MusicManager.start(MusicManager.MusicType.HIT);
+        super.vanish();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.application.music.MusicManager;
 import edu.hitsz.factory.BloodPropFactory;
 import edu.hitsz.factory.BombPropFactory;
 import edu.hitsz.factory.BulletPropFactory;
@@ -23,6 +24,15 @@ public class BossEnemy extends AbstractEnemyAircraft {
         power = 50;
         direction = 1;
         this.setShootStrategy(new ScatterShoot());
+        MusicManager.interruptBgm();
+        MusicManager.startBossBgm();
+    }
+
+    @Override
+    public void vanish() {
+        super.vanish();
+        MusicManager.interruptBossBgm();
+        MusicManager.startBgm();
     }
 
     @Override

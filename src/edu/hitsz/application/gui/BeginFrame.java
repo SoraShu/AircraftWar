@@ -2,6 +2,7 @@ package edu.hitsz.application.gui;
 
 import edu.hitsz.application.Difficulty;
 import edu.hitsz.application.Main;
+import edu.hitsz.application.music.MusicManager;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class BeginFrame {
 
     private void setSound() {
         soundCheckBox.setText(soundMap.get(soundCheckBox.isSelected()));
-        Main.setPlaySound(soundCheckBox.isSelected());
+        MusicManager.setIsPlaySound(soundCheckBox.isSelected());
     }
 
     public JPanel getMainPanel() {

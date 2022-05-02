@@ -2,6 +2,7 @@ package edu.hitsz.application;
 
 import edu.hitsz.application.gui.BeginFrame;
 import edu.hitsz.application.gui.EndFrame;
+import edu.hitsz.application.music.MusicManager;
 import edu.hitsz.leaderboard.Round;
 import edu.hitsz.leaderboard.dao.RoundDao;
 import edu.hitsz.leaderboard.dao.RoundDaoImpl;
@@ -33,16 +34,6 @@ public class Main {
     }
 
     private static Difficulty difficulty;
-
-    public static boolean isPlaySound() {
-        return playSound;
-    }
-
-    public static void setPlaySound(boolean playSound) {
-        Main.playSound = playSound;
-    }
-
-    private static boolean playSound;
 
 
     public static void main(String[] args) throws InterruptedException {

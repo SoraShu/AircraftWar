@@ -1,6 +1,7 @@
 package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.music.MusicManager;
 
 /**
  * @author SoraShu
@@ -14,5 +15,6 @@ public class BloodProp extends AbstractProp {
     @Override
     public void takeEffect(HeroAircraft heroAircraft) {
         heroAircraft.increaseHp(30);
+        MusicManager.start(MusicManager.MusicType.GET_SUPPLY);
     }
 }

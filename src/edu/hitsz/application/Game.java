@@ -2,6 +2,7 @@ package edu.hitsz.application;
 
 import edu.hitsz.aircraft.AbstractEnemyAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.music.MusicManager;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.AbstractBullet;
 import edu.hitsz.factory.BossEnemyFactory;
@@ -52,6 +53,7 @@ public class Game extends JPanel {
     private final EnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
     private final EnemyFactory bossEnemyFactory = new BossEnemyFactory();
     private int enemyMaxNumber = 5;
+    private int bossScoreThreshold = 400;
 
     private boolean gameOverFlag = false;
 
@@ -100,6 +102,7 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
+        MusicManager.startBgm();
 
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
@@ -170,10 +173,13 @@ public class Game extends JPanel {
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
+
 //                printLeaderboard();
                 synchronized (Main.LOCK) {
                     Main.LOCK.notify();
                 }
+                MusicManager.start(MusicManager.MusicType.GAME_OVER);
+                MusicManager.interruptAll();
             }
 
         };
@@ -212,6 +218,8 @@ public class Game extends JPanel {
         }
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
+        // 英雄射击音效
+        MusicManager.start(MusicManager.MusicType.SHOOT);
     }
 
     private void bulletsMoveAction() {
@@ -316,7 +324,7 @@ public class Game extends JPanel {
                 enemyAircraft.vanish();
                 heroAircraft.decreaseHp(Integer.MAX_VALUE);
             }
-            if (preScore / 300 < score / 300) {
+            if (preScore / bossScoreThreshold < score / bossScoreThreshold) {
                 bossCounter++;
                 System.out.println("count:" + bossCounter);
             }
