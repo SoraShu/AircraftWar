@@ -42,11 +42,18 @@ public class ImageManager {
     public static BufferedImage BLOOD_PROP_IMAGE;
     public static BufferedImage BOMB_PROP_IMAGE;
     public static BufferedImage BULLET_PROP_IMAGE;
+    public static Map<Difficulty, String> backgroundMap = new HashMap<>() {
+        {
+            put(Difficulty.EASY, "src/images/bg.jpg");
+            put(Difficulty.NORMAL, "src/images/bg2.jpg");
+            put(Difficulty.DIFFICULT, "src/images/bg3.jpg");
+        }
+    };
 
     static {
         try {
 
-            BACKGROUND_IMAGE = ImageIO.read(new FileInputStream("src/images/bg.jpg"));
+            BACKGROUND_IMAGE = ImageIO.read(new FileInputStream(backgroundMap.get(Main.getDifficulty())));
 
             HERO_IMAGE = ImageIO.read(new FileInputStream("src/images/hero.png"));
             MOB_ENEMY_IMAGE = ImageIO.read(new FileInputStream("src/images/mob.png"));

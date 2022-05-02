@@ -3,6 +3,9 @@ package edu.hitsz.factory;
 import edu.hitsz.aircraft.AbstractEnemyAircraft;
 import edu.hitsz.aircraft.BossEnemy;
 
+/**
+ * @author SoraShu
+ */
 public class BossEnemyFactory implements EnemyFactory {
 
     @Override

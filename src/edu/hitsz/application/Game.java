@@ -64,7 +64,7 @@ public class Game extends JPanel {
     private int score = 0;
     private int time = 0;
     private int bossCounter = 0;
-    private String FilePath = "./data.ser";
+    private String filePath = "./data.ser";
     private Round thisRound;
     private List<Round> rounds;
 

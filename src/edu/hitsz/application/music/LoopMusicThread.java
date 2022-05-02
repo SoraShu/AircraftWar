@@ -3,10 +3,14 @@ package edu.hitsz.application.music;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+/**
+ * @author SoraShu
+ */
 public class LoopMusicThread extends MusicThread {
     public LoopMusicThread(String filePath) {
         super(filePath);
     }
+
     @Override
     public void run() {
         InputStream stream;

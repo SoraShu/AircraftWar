@@ -1,5 +1,8 @@
 package edu.hitsz.application.music;
 
+/**
+ * @author SoraShu
+ */
 public class MusicManager {
     public enum MusicType {
         /**
@@ -35,6 +38,7 @@ public class MusicManager {
         MusicType(String filename) {
             this.filename = filename;
         }
+
         public String getFilePath() {
             return "./src/videos/" + filename;
         }
@@ -96,6 +100,7 @@ public class MusicManager {
     public static void interruptBossBgm() {
         BossBgm.interrupt();
     }
+
     public static void interruptBgm() {
         Bgm.interrupt();
     }

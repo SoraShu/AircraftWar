@@ -3,6 +3,9 @@ package edu.hitsz.application.music;
 import javax.sound.sampled.*;
 import java.io.*;
 
+/**
+ * @author SoraShu
+ */
 public class MusicThread extends Thread {
 
 
