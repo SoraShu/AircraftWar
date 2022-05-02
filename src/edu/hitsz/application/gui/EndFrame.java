@@ -7,8 +7,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
+/**
+ * @author SoraShu
+ */
 public class EndFrame {
-    private String level = "简单";
     private JPanel mainPanel;
     private JLabel levelLabel;
     private JPanel topPanel;
@@ -20,13 +22,13 @@ public class EndFrame {
 
     private List<Round> rounds;
 
-    private String[] columnNames = {"名次", "玩家名", "得分", "记录时间"};
+    private final String[] columnNames = {"名次", "玩家名", "得分", "记录时间"};
 
     private Object[][] tableData = {{}};
 
 
     public EndFrame() {
-        levelDisplayLabel.setText("EASY");
+        levelDisplayLabel.setText(Main.getDifficulty().getName());
 
         setTable();
 

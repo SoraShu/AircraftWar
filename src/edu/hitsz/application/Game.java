@@ -9,15 +9,12 @@ import edu.hitsz.factory.EliteEnemyFactory;
 import edu.hitsz.factory.EnemyFactory;
 import edu.hitsz.factory.MobEnemyFactory;
 import edu.hitsz.leaderboard.Round;
-import edu.hitsz.leaderboard.dao.RoundDao;
-import edu.hitsz.leaderboard.dao.RoundDaoImpl;
 import edu.hitsz.prop.AbstractProp;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -174,8 +171,8 @@ public class Game extends JPanel {
                 gameOverFlag = true;
                 System.out.println("Game Over!");
 //                printLeaderboard();
-                synchronized (Main.lock) {
-                    Main.lock.notify();
+                synchronized (Main.LOCK) {
+                    Main.LOCK.notify();
                 }
             }
 

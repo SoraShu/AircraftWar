@@ -1,5 +1,6 @@
 package edu.hitsz.application;
 
+import edu.hitsz.application.gui.BeginFrame;
 import edu.hitsz.application.gui.EndFrame;
 import edu.hitsz.leaderboard.Round;
 import edu.hitsz.leaderboard.dao.RoundDao;
@@ -21,20 +22,34 @@ public class Main {
     public static final int WINDOW_HEIGHT = 768;
 
     public static RoundDao roundDao;
-    public static final Object lock = new Object();
+    public static final Object LOCK = new Object();
+
+    public static void setDifficulty(Difficulty difficulty) {
+        Main.difficulty = difficulty;
+    }
+
+    public static Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    private static Difficulty difficulty;
+
+    public static boolean isPlaySound() {
+        return playSound;
+    }
+
+    public static void setPlaySound(boolean playSound) {
+        Main.playSound = playSound;
+    }
+
+    private static boolean playSound;
 
 
     public static void main(String[] args) throws InterruptedException {
 
         System.out.println("Hello Aircraft War");
         String filePath;
-        filePath = "./data.ser";
 
-        try {
-            roundDao = new RoundDaoImpl(filePath);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
         // 获得屏幕的分辨率，初始化 Frame
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame frame = new JFrame("Aircraft War");
@@ -45,15 +60,34 @@ public class Main {
                 WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
+        BeginFrame beginFrame = new BeginFrame();
+        frame.setContentPane(beginFrame.getMainPanel());
+        frame.setVisible(true);
+        synchronized (LOCK) {
+            LOCK.wait();
+        }
+        frame.remove(beginFrame.getMainPanel());
+
+        filePath = "./data/" + difficulty.getName().toLowerCase() + ".ser";
+
+        try {
+            roundDao = new RoundDaoImpl(filePath);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         Game game = new Game();
-        frame.add(game);
+        frame.setContentPane(game);
         frame.setVisible(true);
         game.action();
-        synchronized (lock) {
-            lock.wait();
+        synchronized (LOCK) {
+            LOCK.wait();
         }
         int roundScore = game.getScore();
         frame.remove(game);
+
+
         String playerName = JOptionPane.showInputDialog(
                 frame,
                 "游戏结束。你的得分是 " + roundScore + "。\n请输入名字记录得分:", "提示",
@@ -63,6 +97,8 @@ public class Main {
             playerName = "Anonymous";
         }
         roundDao.addRound(new Round(playerName, roundScore));
+
+
         EndFrame endFrame = new EndFrame();
         frame.setContentPane(endFrame.getMainPanel());
         frame.setVisible(true);
