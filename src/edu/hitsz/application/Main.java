@@ -79,19 +79,19 @@ public class Main {
         frame.remove(game);
 
 
+        EndFrame endFrame = new EndFrame();
+        frame.setContentPane(endFrame.getMainPanel());
+        frame.setVisible(true);
+
         String playerName = JOptionPane.showInputDialog(
                 frame,
                 "游戏结束。你的得分是 " + roundScore + "。\n请输入名字记录得分:", "提示",
                 JOptionPane.PLAIN_MESSAGE
         );
-        if (Objects.equals(playerName, "")) {
+        if (Objects.equals(playerName, "") || playerName == null) {
             playerName = "Anonymous";
         }
         roundDao.addRound(new Round(playerName, roundScore));
-
-
-        EndFrame endFrame = new EndFrame();
-        frame.setContentPane(endFrame.getMainPanel());
-        frame.setVisible(true);
+        endFrame.setTable();
     }
 }

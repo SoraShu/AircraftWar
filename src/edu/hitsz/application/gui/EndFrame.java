@@ -57,7 +57,7 @@ public class EndFrame {
 
     }
 
-    private void setTable(){
+    public void setTable() {
         rounds = Main.roundDao.getSortedRounds();
         if (rounds != null) {
             int len = rounds.size();
