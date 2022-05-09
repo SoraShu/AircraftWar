@@ -2,7 +2,6 @@ package edu.hitsz.application;
 
 import edu.hitsz.application.gui.BeginFrame;
 import edu.hitsz.application.gui.EndFrame;
-import edu.hitsz.application.music.MusicManager;
 import edu.hitsz.leaderboard.Round;
 import edu.hitsz.leaderboard.dao.RoundDao;
 import edu.hitsz.leaderboard.dao.RoundDaoImpl;
@@ -23,6 +22,7 @@ public class Main {
     public static final int WINDOW_HEIGHT = 768;
 
     public static RoundDao roundDao;
+    public static Game game;
     public static final Object LOCK = new Object();
 
     public static void setDifficulty(Difficulty difficulty) {
@@ -68,7 +68,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        Game game = new Game();
+        game = new Game();
         frame.setContentPane(game);
         frame.setVisible(true);
         game.action();

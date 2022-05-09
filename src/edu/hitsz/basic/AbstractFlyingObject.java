@@ -166,5 +166,12 @@ public abstract class AbstractFlyingObject {
         isValid = false;
     }
 
+    /**
+     * 被 Bomb 道具通知
+     */
+    public void onBombHandle() {
+        vanish();
+    }
+
 }
 

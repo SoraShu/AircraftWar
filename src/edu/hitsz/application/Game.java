@@ -43,9 +43,19 @@ public class Game extends JPanel {
     private int timeInterval = 40;
 
     private final HeroAircraft heroAircraft;
+
+    public List<AbstractEnemyAircraft> getEnemyAircrafts() {
+        return enemyAircrafts;
+    }
+
     private final List<AbstractEnemyAircraft> enemyAircrafts;
     private final List<AbstractEnemyAircraft> bossAircrafts;
     private final List<AbstractBullet> heroBullets;
+
+    public List<AbstractBullet> getEnemyBullets() {
+        return enemyBullets;
+    }
+
     private final List<AbstractBullet> enemyBullets;
     private final List<AbstractProp> allProps;
 
