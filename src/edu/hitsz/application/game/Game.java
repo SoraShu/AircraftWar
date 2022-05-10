@@ -73,6 +73,10 @@ public abstract class Game extends JPanel {
         return score;
     }
 
+    public void increaseScore(int increase) {
+        score += increase;
+    }
+
     private int score = 0;
     private int time = 0;
     private int preTime = 0;

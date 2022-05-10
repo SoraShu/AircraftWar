@@ -29,6 +29,16 @@ public abstract class AbstractEnemyAircraft extends AbstractAircraft {
         }
     }
 
+    private void onDistroy() {
+        Main.game.increaseScore(this.score);
+    }
+
+    @Override
+    public void onBombHandle() {
+        super.onBombHandle();
+        onDistroy();
+    }
+
     /**
      * 敌机死亡后生成道具
      *

@@ -48,10 +48,12 @@ public class BombProp extends AbstractProp {
     @Override
     public void takeEffect(HeroAircraft heroAircraft) {
         System.out.println("BombSupply active!");
+//        System.out.println(Main.game.getScore());
         MusicManager.start(MusicManager.MusicType.BOMB_EXPLOSION);
         addSubscriberByList(enemyAircrafts);
         addSubscriberByList(enemyBullets);
         notifyAllSubscribers();
         unsubscribeAll();
+//        System.out.println(Main.game.getScore());
     }
 }
