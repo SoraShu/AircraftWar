@@ -73,6 +73,7 @@ public class Game extends JPanel {
 
     private int score = 0;
     private int time = 0;
+    private int preTime = 0;
     private int bossCounter = 0;
     private String filePath = "./data.ser";
     private Round thisRound;
@@ -83,7 +84,6 @@ public class Game extends JPanel {
      * 指示子弹的发射、敌机的产生频率
      */
     private int cycleDuration = 600;
-    private int cycleTime = 0;
 
 
     public Game() {
@@ -117,44 +117,15 @@ public class Game extends JPanel {
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
 
+            preTime = time;
             time += timeInterval;
 
             // 周期性执行（控制频率）
-            if (timeCountAndNewCycleJudge()) {
+            if (newCycleJudge(cycleDuration)) {
                 System.out.println(time);
                 // 新敌机产生
-                if (enemyAircrafts.size() < enemyMaxNumber) {
-                    Random rnd = new Random();
-                    int ran = rnd.nextInt(5);
-                    if (ran <= 3) {
-                        enemyAircrafts.add(mobEnemyFactory.createEnemyAircraft(
-                                (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
-                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
-                                0,
-                                10,
-                                30
-                        ));
-                    } else {
-                        //System.out.println("elite");
-                        enemyAircrafts.add(eliteEnemyFactory.createEnemyAircraft(
-                                (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
-                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
-                                5,
-                                5,
-                                30
-                        ));
-                    }
-                }
-                if (bossCounter > 0 && bossAircrafts.size() == 0) {
-                    bossAircrafts.add(bossEnemyFactory.createEnemyAircraft(
-                            (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
-                            (int) (Math.random() * Main.WINDOW_HEIGHT * 0.2),
-                            10,
-                            0,
-                            200
-                    ));
-                    bossCounter--;
-                }
+                createNomalEnemy();
+                createBoss();
                 // 飞机射出子弹
                 shootAction();
             }
@@ -205,16 +176,27 @@ public class Game extends JPanel {
     //***********************
     //      Action 各部分
     //***********************
-
-    private boolean timeCountAndNewCycleJudge() {
-        cycleTime += timeInterval;
-        if (cycleTime >= cycleDuration && cycleTime - timeInterval < cycleTime) {
-            // 跨越到新的周期
-            cycleTime %= cycleDuration;
-            return true;
-        } else {
-            return false;
+    private void createBoss() {
+        if (bossCounter > 0 && bossAircrafts.size() == 0) {
+            bossAircrafts.add(bossEnemyFactory.createEnemyAircraft());
+            bossCounter--;
         }
+    }
+
+    private void createNomalEnemy() {
+        if (enemyAircrafts.size() < enemyMaxNumber) {
+            Random rnd = new Random();
+            int ran = rnd.nextInt(5);
+            if (ran <= 3) {
+                enemyAircrafts.add(mobEnemyFactory.createEnemyAircraft());
+            } else {
+                enemyAircrafts.add(eliteEnemyFactory.createEnemyAircraft());
+            }
+        }
+    }
+
+    private boolean newCycleJudge(int duration) {
+        return preTime / duration < time / duration;
     }
 
     private void shootAction() {
@@ -336,7 +318,7 @@ public class Game extends JPanel {
             }
             if (preScore / bossScoreThreshold < score / bossScoreThreshold) {
                 bossCounter++;
-                System.out.println("count:" + bossCounter);
+//                System.out.println("count:" + bossCounter);
             }
         }
         return false;
@@ -363,11 +345,6 @@ public class Game extends JPanel {
         System.out.println("********************************************************");
         System.out.println("*                     leaderboard                      *");
         System.out.println("********************************************************");
-//        try {
-//            roundDao = new RoundDaoImpl(FilePath);
-//        } catch (IOException | ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
         thisRound = new Round("testUserName", score);
         Main.roundDao.addRound(thisRound);
         rounds = Main.roundDao.getSortedRounds();
