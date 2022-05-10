@@ -1,7 +1,10 @@
-package edu.hitsz.application;
+package edu.hitsz.application.game;
 
 import edu.hitsz.aircraft.AbstractEnemyAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
+import edu.hitsz.application.HeroController;
+import edu.hitsz.application.ImageManager;
+import edu.hitsz.application.Main;
 import edu.hitsz.application.music.MusicManager;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.AbstractBullet;
@@ -28,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author hitsz
  */
-public class Game extends JPanel {
+public abstract class Game extends JPanel {
 
     private int backGroundTop = 0;
 
@@ -59,11 +62,10 @@ public class Game extends JPanel {
     private final List<AbstractBullet> enemyBullets;
     private final List<AbstractProp> allProps;
 
-    private final EnemyFactory mobEnemyFactory = new MobEnemyFactory();
-    private final EnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
-    private final EnemyFactory bossEnemyFactory = new BossEnemyFactory();
-    private int enemyMaxNumber = 5;
-    private int bossScoreThreshold = 400;
+    protected final EnemyFactory mobEnemyFactory = new MobEnemyFactory();
+    protected final EnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
+    protected final EnemyFactory bossEnemyFactory = new BossEnemyFactory();
+
 
     private boolean gameOverFlag = false;
 
@@ -83,8 +85,16 @@ public class Game extends JPanel {
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
      */
-    private int cycleDuration = 600;
+    protected int createDuration = 600;
+    protected int enemyShootDuration = 600;
+    protected int heroShootDuration = 300;
+    protected int difficultyChangeDuration = 10000;
 
+    /*
+     * 难度相关 field
+     */
+    protected int enemyMaxNumber = 5;
+    protected int bossScoreThreshold = 400;
 
     public Game() {
         heroAircraft = HeroAircraft.getHeroAircraft();
@@ -94,6 +104,11 @@ public class Game extends JPanel {
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         allProps = new LinkedList<>();
+
+        /*
+         * 初始化 difficulty 相关数值
+         */
+        difficultyInitial();
 
         /*
          * Scheduled 线程池，用于定时任务调度
@@ -121,13 +136,21 @@ public class Game extends JPanel {
             time += timeInterval;
 
             // 周期性执行（控制频率）
-            if (newCycleJudge(cycleDuration)) {
-                System.out.println(time);
-                // 新敌机产生
+            if (newCycleJudge(createDuration)) {
                 createNomalEnemy();
                 createBoss();
-                // 飞机射出子弹
-                shootAction();
+            }
+
+            if (newCycleJudge(enemyShootDuration)) {
+                enemyShootAction();
+            }
+
+            if (newCycleJudge(heroShootDuration)) {
+                heroShootAction();
+            }
+
+            if (newCycleJudge(difficultyChangeDuration)) {
+                difficultyChangeAction();
             }
 
             // 子弹移动
@@ -213,6 +236,28 @@ public class Game extends JPanel {
         // 英雄射击音效
         MusicManager.start(MusicManager.MusicType.SHOOT);
     }
+
+    private void heroShootAction() {
+        // 英雄射击
+        heroBullets.addAll(heroAircraft.shoot());
+        // 英雄射击音效
+        MusicManager.start(MusicManager.MusicType.SHOOT);
+    }
+
+    private void enemyShootAction() {
+        //  敌机射击
+        for (AbstractEnemyAircraft enemyAircraft : enemyAircrafts) {
+            enemyBullets.addAll(enemyAircraft.shoot());
+        }
+        // boss射击
+        for (AbstractEnemyAircraft bossAircraft : bossAircrafts) {
+            enemyBullets.addAll(bossAircraft.shoot());
+        }
+    }
+
+    abstract protected void difficultyChangeAction();
+
+    abstract protected void difficultyInitial();
 
     private void bulletsMoveAction() {
         for (AbstractBullet bullet : heroBullets) {

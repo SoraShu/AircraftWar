@@ -92,5 +92,9 @@ public class HeroAircraft extends AbstractAircraft {
 //        }
 //        return res;
 //    }
+    @Override
+    public int getWidth() {
+        return super.getWidth() / 2;
+    }
 
 }

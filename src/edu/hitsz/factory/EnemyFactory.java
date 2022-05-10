@@ -10,20 +10,32 @@ import edu.hitsz.application.Main;
 public abstract class EnemyFactory {
 
 
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public void setSpeedX(int speedX) {
+        this.speedX = speedX;
+    }
+
+    public void setSpeedY(int speedY) {
+        this.speedY = speedY;
+    }
+
     protected int hp;
     protected int speedX;
     protected int speedY;
 
-    public void changeHp(int deltaHp) {
-        this.hp += deltaHp;
+    public void changeHp(double ratio) {
+        this.hp = (int) Math.ceil(hp * (1.0 + ratio));
     }
 
-    public void changeSpeedX(int deltaSpeedX) {
-        this.speedX = deltaSpeedX;
+    public void changeSpeedX(double ratio) {
+        this.speedX = (int) Math.ceil(speedX * (1.0 + ratio));
     }
 
-    public void changeSpeedY(int deltaSpeedY) {
-        this.speedY = deltaSpeedY;
+    public void changeSpeedY(double ratio) {
+        this.speedY = (int) Math.ceil(speedY * (1.0 + ratio));
     }
 
     /**

@@ -1,5 +1,9 @@
 package edu.hitsz.application;
 
+import edu.hitsz.application.game.DifficultGame;
+import edu.hitsz.application.game.EasyGame;
+import edu.hitsz.application.game.Game;
+import edu.hitsz.application.game.NormalGame;
 import edu.hitsz.application.gui.BeginFrame;
 import edu.hitsz.application.gui.EndFrame;
 import edu.hitsz.leaderboard.Round;
@@ -67,8 +71,20 @@ public class Main {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        switch (difficulty) {
+            case EASY:
+                game = new EasyGame();
+                break;
+            case NORMAL:
+                game = new NormalGame();
+                break;
+            case DIFFICULT:
+                game = new DifficultGame();
+                break;
+            default:
+                throw new RuntimeException("Difficulty unset!");
+        }
 
-        game = new Game();
         frame.setContentPane(game);
         frame.setVisible(true);
         game.action();
