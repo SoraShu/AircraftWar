@@ -93,15 +93,24 @@ public class MusicManager {
     }
 
     public static void interruptAll() {
+        if (!isPlaySound) {
+            return;
+        }
         Bgm.interrupt();
         BossBgm.interrupt();
     }
 
     public static void interruptBossBgm() {
+        if (!isPlaySound) {
+            return;
+        }
         BossBgm.interrupt();
     }
 
     public static void interruptBgm() {
+        if (!isPlaySound) {
+            return;
+        }
         Bgm.interrupt();
     }
 }
