@@ -1,6 +1,5 @@
 package edu.hitsz.aircraft;
 
-import edu.hitsz.bullet.AbstractBullet;
 import edu.hitsz.prop.AbstractProp;
 import edu.hitsz.strategy.NullShoot;
 
@@ -23,11 +22,6 @@ public class MobEnemy extends AbstractEnemyAircraft {
         direction = 0;
         this.setShootStrategy(new NullShoot());
     }
-
-//    @Override
-//    public List<AbstractBullet> shoot() {
-//        return new LinkedList<>();
-//    }
 
     @Override
     public List<AbstractProp> leftProp() {
