@@ -1,0 +1,128 @@
+@startuml
+class edu.hitsz.aircraft.MobEnemy {
++ <<Create>> MobEnemy(int,int,int,int,int)
++ List<AbstractProp> leftProp()
+}
+class edu.hitsz.prop.BulletProp {
+- {static} long id
++ <<Create>> BulletProp(int,int,int,int)
++ {static} long getId()
++ void takeEffect(HeroAircraft)
+}
+abstract class edu.hitsz.aircraft.AbstractEnemyAircraft {
+# int score
++ <<Create>> AbstractEnemyAircraft(int,int,int,int,int)
++ int getScore()
++ void forward()
+- void onDistroy()
++ void onBombHandle()
++ {abstract}List<AbstractProp> leftProp()
+}
+class edu.hitsz.aircraft.EliteEnemy {
++ <<Create>> EliteEnemy(int,int,int,int,int)
++ List<AbstractProp> leftProp()
+}
+abstract class edu.hitsz.aircraft.AbstractAircraft {
+# int maxHp
+# int hp
+# int shootNum
+# int direction
+# int power
+# Shoot shootStrategy
++ <<Create>> AbstractAircraft(int,int,int,int,int)
++ int getShootNum()
++ void setShootNum(int)
++ int getDirection()
++ int getPower()
++ Shoot executeShootStrategy()
++ void setShootStrategy(Shoot)
++ void decreaseHp(int)
++ void increaseHp(int)
++ int getHp()
++ List<AbstractBullet> shoot()
+}
+abstract class edu.hitsz.bullet.AbstractBullet {
+- int power
++ <<Create>> AbstractBullet(int,int,int,int,int)
++ void vanish()
++ void forward()
++ int getPower()
+}
+abstract class edu.hitsz.prop.AbstractProp {
++ <<Create>> AbstractProp(int,int,int,int)
++ {abstract}void takeEffect(HeroAircraft)
+}
+class edu.hitsz.bullet.EnemyBullet {
++ <<Create>> EnemyBullet(int,int,int,int,int)
+}
+class edu.hitsz.aircraft.BossEnemy {
++ <<Create>> BossEnemy(int,int,int,int,int)
++ void vanish()
++ List<AbstractProp> leftProp()
+}
+abstract class edu.hitsz.basic.AbstractFlyingObject {
+# int locationX
+# int locationY
+# int speedX
+# int speedY
+# BufferedImage image
+# int width
+# int height
+# boolean isValid
++ <<Create>> AbstractFlyingObject()
++ <<Create>> AbstractFlyingObject(int,int,int,int)
++ void forward()
++ boolean crash(AbstractFlyingObject)
++ int getLocationX()
++ int getLocationY()
++ void setLocation(double,double)
++ int getSpeedY()
++ BufferedImage getImage()
++ int getWidth()
++ int getHeight()
++ boolean notValid()
++ void vanish()
++ void onBombHandle()
+}
+class edu.hitsz.prop.BombProp {
+- List<AbstractBullet> enemyBullets
+- List<AbstractEnemyAircraft> enemyAircrafts
+- List<AbstractFlyingObject> subscribers
++ <<Create>> BombProp(int,int,int,int)
+- void addSubscriber(AbstractFlyingObject)
+- void addSubscriberByList(List<? extends AbstractFlyingObject>)
+- void removeSubscriber(AbstractFlyingObject)
+- void unsubscribeAll()
+- void notifyAllSubscribers()
++ void takeEffect(HeroAircraft)
+}
+class edu.hitsz.prop.BloodProp {
++ <<Create>> BloodProp(int,int,int,int)
++ void takeEffect(HeroAircraft)
+}
+class edu.hitsz.aircraft.HeroAircraft {
+- {static} HeroAircraft heroAircraft
+- <<Create>> HeroAircraft(int,int,int,int,int)
++ {static} HeroAircraft getHeroAircraft()
++ void forward()
++ int getWidth()
+}
+class edu.hitsz.bullet.HeroBullet {
++ <<Create>> HeroBullet(int,int,int,int,int)
+}
+
+
+edu.hitsz.aircraft.AbstractEnemyAircraft <|-- edu.hitsz.aircraft.MobEnemy
+edu.hitsz.prop.AbstractProp <|-- edu.hitsz.prop.BulletProp
+edu.hitsz.aircraft.AbstractAircraft <|-- edu.hitsz.aircraft.AbstractEnemyAircraft
+edu.hitsz.aircraft.AbstractEnemyAircraft <|-- edu.hitsz.aircraft.EliteEnemy
+edu.hitsz.basic.AbstractFlyingObject <|-- edu.hitsz.aircraft.AbstractAircraft
+edu.hitsz.basic.AbstractFlyingObject <|-- edu.hitsz.bullet.AbstractBullet
+edu.hitsz.basic.AbstractFlyingObject <|-- edu.hitsz.prop.AbstractProp
+edu.hitsz.bullet.AbstractBullet <|-- edu.hitsz.bullet.EnemyBullet
+edu.hitsz.aircraft.AbstractEnemyAircraft <|-- edu.hitsz.aircraft.BossEnemy
+edu.hitsz.prop.AbstractProp <|-- edu.hitsz.prop.BombProp
+edu.hitsz.prop.AbstractProp <|-- edu.hitsz.prop.BloodProp
+edu.hitsz.aircraft.AbstractAircraft <|-- edu.hitsz.aircraft.HeroAircraft
+edu.hitsz.bullet.AbstractBullet <|-- edu.hitsz.bullet.HeroBullet
+@enduml

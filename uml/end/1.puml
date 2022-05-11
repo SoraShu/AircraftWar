@@ -1,0 +1,421 @@
+@startuml
+interface edu.hitsz.strategy.Shoot {
+~ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+class edu.hitsz.leaderboard.Round {
+- {static} long serialVersionUID
+- int id
+- String playTime
+- String playerName
+- int finalScore
++ <<Create>> Round(String,int)
++ int getId()
++ String getPlayTime()
++ String getPlayerName()
++ int getFinalScore()
++ String toString()
+}
+interface edu.hitsz.factory.BulletFactory {
+~ AbstractBullet createBullet(int,int,int,int,int)
+}
+class edu.hitsz.prop.BulletProp {
+- {static} long id
++ <<Create>> BulletProp(int,int,int,int)
++ {static} long getId()
++ void takeEffect(HeroAircraft)
+}
+abstract class edu.hitsz.aircraft.AbstractEnemyAircraft {
+# int score
++ <<Create>> AbstractEnemyAircraft(int,int,int,int,int)
++ int getScore()
++ void forward()
+- void onDistroy()
++ void onBombHandle()
++ {abstract}List<AbstractProp> leftProp()
+}
+class edu.hitsz.aircraft.EliteEnemy {
++ <<Create>> EliteEnemy(int,int,int,int,int)
++ List<AbstractProp> leftProp()
+}
+class edu.hitsz.application.game.DifficultGame {
+# void difficultyInitial()
+# void difficultyChangeAction()
+}
+abstract class edu.hitsz.aircraft.AbstractAircraft {
+# int maxHp
+# int hp
+# int shootNum
+# int direction
+# int power
+# Shoot shootStrategy
++ <<Create>> AbstractAircraft(int,int,int,int,int)
++ int getShootNum()
++ void setShootNum(int)
++ int getDirection()
++ int getPower()
++ Shoot executeShootStrategy()
++ void setShootStrategy(Shoot)
++ void decreaseHp(int)
++ void increaseHp(int)
++ int getHp()
++ List<AbstractBullet> shoot()
+}
+class edu.hitsz.strategy.NullShoot {
++ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+abstract class edu.hitsz.prop.AbstractProp {
++ <<Create>> AbstractProp(int,int,int,int)
++ {abstract}void takeEffect(HeroAircraft)
+}
+abstract class edu.hitsz.factory.EnemyFactory {
+# int hp
+# int speedX
+# int speedY
++ void setHp(int)
++ void setSpeedX(int)
++ void setSpeedY(int)
++ void changeHp(double)
++ void changeSpeedX(double)
++ void changeSpeedY(double)
++ {abstract}AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
++ AbstractEnemyAircraft createEnemyAircraft()
+}
+enum edu.hitsz.application.Difficulty {
++  EASY
++  NORMAL
++  DIFFICULT
+- String name
+- int index
+~ <<Create>> Difficulty(String,int)
++ String getName()
+}
+class edu.hitsz.bullet.EnemyBullet {
++ <<Create>> EnemyBullet(int,int,int,int,int)
+}
+class edu.hitsz.factory.BombPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+abstract class edu.hitsz.basic.AbstractFlyingObject {
+# int locationX
+# int locationY
+# int speedX
+# int speedY
+# BufferedImage image
+# int width
+# int height
+# boolean isValid
++ <<Create>> AbstractFlyingObject()
++ <<Create>> AbstractFlyingObject(int,int,int,int)
++ void forward()
++ boolean crash(AbstractFlyingObject)
++ int getLocationX()
++ int getLocationY()
++ void setLocation(double,double)
++ int getSpeedY()
++ BufferedImage getImage()
++ int getWidth()
++ int getHeight()
++ boolean notValid()
++ void vanish()
++ void onBombHandle()
+}
+class edu.hitsz.prop.BombProp {
+- List<AbstractBullet> enemyBullets
+- List<AbstractEnemyAircraft> enemyAircrafts
+- List<AbstractFlyingObject> subscribers
++ <<Create>> BombProp(int,int,int,int)
+- void addSubscriber(AbstractFlyingObject)
+- void addSubscriberByList(List<? extends AbstractFlyingObject>)
+- void removeSubscriber(AbstractFlyingObject)
+- void unsubscribeAll()
+- void notifyAllSubscribers()
++ void takeEffect(HeroAircraft)
+}
+class edu.hitsz.factory.HeroBulletFactory {
++ AbstractBullet createBullet(int,int,int,int,int)
+}
+class edu.hitsz.application.music.MusicManager {
+- {static} boolean isPlayBulletSound
+- {static} boolean isPlaySound
+- {static} Thread BossBgm
+- {static} Thread Bgm
++ {static} void setIsPlaySound(boolean)
++ {static} void start(MusicType)
++ {static} void startBossBgm()
++ {static} void startBgm()
++ {static} void interruptAll()
++ {static} void interruptBossBgm()
++ {static} void interruptBgm()
+}
+enum edu.hitsz.application.music.MusicType {
++  BGM
++  BOSS_BGM
++  BOMB_EXPLOSION
++  SHOOT
++  HIT
++  GET_SUPPLY
++  GAME_OVER
+- String filename
+~ <<Create>> MusicType(String)
++ String getFilePath()
+}
+class edu.hitsz.prop.BloodProp {
++ <<Create>> BloodProp(int,int,int,int)
++ void takeEffect(HeroAircraft)
+}
+class edu.hitsz.aircraft.HeroAircraft {
+- {static} HeroAircraft heroAircraft
+- <<Create>> HeroAircraft(int,int,int,int,int)
++ {static} HeroAircraft getHeroAircraft()
++ void forward()
++ int getWidth()
+}
+interface edu.hitsz.factory.PropFactory {
+~ AbstractProp createProp(int,int,int,int)
+}
+class edu.hitsz.application.music.MusicThread {
+- String filePath
+- AudioFormat audioFormat
+# byte[] samples
+# boolean isInterrupted
++ <<Create>> MusicThread(String)
++ void reverseMusic()
++ byte[] getSamples(AudioInputStream)
+# void play(InputStream)
++ void interrupt()
++ void run()
+}
+interface edu.hitsz.leaderboard.dao.RoundDao {
+~ void addRound(Round)
+~ List<Round> getAllRounds()
+~ List<Round> getSortedRounds()
+~ Round getRound(int)
+~ void delRound(int)
+~ void delRound(Round)
+}
+class edu.hitsz.factory.MobEnemyFactory {
++ <<Create>> MobEnemyFactory()
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+class edu.hitsz.application.gui.EndFrame {
+- JPanel mainPanel
+- JLabel levelLabel
+- JPanel topPanel
+- JPanel buttonPanel
+- JTable roundTable
+- JScrollPane mediumPanel
+- JLabel levelDisplayLabel
+- JButton delButton
+- List<Round> rounds
+- String[] columnNames
+- Object[][] tableData
++ <<Create>> EndFrame()
++ void setTable()
+- void deleteRow()
++ JPanel getMainPanel()
+}
+class edu.hitsz.factory.EnemyBulletFactory {
++ AbstractBullet createBullet(int,int,int,int,int)
+}
+class edu.hitsz.application.music.LoopMusicThread {
++ <<Create>> LoopMusicThread(String)
++ void run()
+}
+class edu.hitsz.leaderboard.RoundListSerialize {
++ {static} void ser(File,List<Round>)
++ {static} List<Round> dser(File)
+}
+class edu.hitsz.aircraft.MobEnemy {
++ <<Create>> MobEnemy(int,int,int,int,int)
++ List<AbstractProp> leftProp()
+}
+abstract class edu.hitsz.application.game.Game {
+- int backGroundTop
+- ScheduledExecutorService executorService
+- int timeInterval
+- HeroAircraft heroAircraft
+- List<AbstractEnemyAircraft> enemyAircrafts
+- List<AbstractEnemyAircraft> bossAircrafts
+- List<AbstractBullet> heroBullets
+- List<AbstractBullet> enemyBullets
+- List<AbstractProp> allProps
+# EnemyFactory mobEnemyFactory
+# EnemyFactory eliteEnemyFactory
+# EnemyFactory bossEnemyFactory
+- boolean gameOverFlag
+- int score
+- int time
+- int preTime
+- int bossCounter
+- String filePath
+- Round thisRound
+- List<Round> rounds
+# int createDuration
+# int enemyShootDuration
+# int heroShootDuration
+# int difficultyChangeDuration
+# int enemyMaxNumber
+# int bossScoreThreshold
++ <<Create>> Game()
++ List<AbstractEnemyAircraft> getEnemyAircrafts()
++ List<AbstractBullet> getEnemyBullets()
++ int getScore()
++ void increaseScore(int)
++ void action()
+- void createBoss()
+- void createNomalEnemy()
+- boolean newCycleJudge(int)
+- void shootAction()
+- void heroShootAction()
+- void enemyShootAction()
+# {abstract}void difficultyChangeAction()
+# {abstract}void difficultyInitial()
+- void bulletsMoveAction()
+- void aircraftsMoveAction()
+- void propsMoveAction()
+- void crashCheckAction()
+- boolean shootEnemy(AbstractBullet,List<AbstractEnemyAircraft>)
+- void postProcessAction()
+- void printLeaderboard()
++ void paint(Graphics)
+- void paintImageWithPositionRevised(Graphics,List<? extends AbstractFlyingObject>)
+- void paintScoreAndLife(Graphics)
+}
+class edu.hitsz.application.game.EasyGame {
+# void difficultyInitial()
+# void difficultyChangeAction()
+}
+class edu.hitsz.factory.BulletPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+class edu.hitsz.strategy.StraightShoot {
++ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+class edu.hitsz.factory.BloodPropFactory {
++ AbstractProp createProp(int,int,int,int)
+}
+class edu.hitsz.application.ImageManager {
+- {static} Map<String,BufferedImage> CLASSNAME_IMAGE_MAP
++ {static} BufferedImage BACKGROUND_IMAGE
++ {static} BufferedImage HERO_IMAGE
++ {static} BufferedImage HERO_BULLET_IMAGE
++ {static} BufferedImage ENEMY_BULLET_IMAGE
++ {static} BufferedImage MOB_ENEMY_IMAGE
++ {static} BufferedImage ELITE_ENEMY_IMAGE
++ {static} BufferedImage BOSS_ENEMY_IMAGE
++ {static} BufferedImage BLOOD_PROP_IMAGE
++ {static} BufferedImage BOMB_PROP_IMAGE
++ {static} BufferedImage BULLET_PROP_IMAGE
++ {static} Map<Difficulty,String> backgroundMap
++ {static} BufferedImage get(String)
++ {static} BufferedImage get(Object)
+}
+class edu.hitsz.leaderboard.dao.RoundDaoImpl {
+- File file
+- List<Round> rounds
++ <<Create>> RoundDaoImpl(File)
++ <<Create>> RoundDaoImpl(String)
++ void writeToFile()
++ void addRound(Round)
++ void addRound(Round,boolean)
++ List<Round> getAllRounds()
++ List<Round> getSortedRounds()
++ Round getRound(int)
++ void delRound(int)
++ void delRound(Round)
+}
+class edu.hitsz.application.Main {
++ {static} int WINDOW_WIDTH
++ {static} int WINDOW_HEIGHT
++ {static} RoundDao roundDao
++ {static} Game game
++ {static} Object LOCK
+- {static} Difficulty difficulty
++ {static} void setDifficulty(Difficulty)
++ {static} Difficulty getDifficulty()
++ {static} void main(String[])
+}
+class edu.hitsz.strategy.ScatterShoot {
++ List<AbstractBullet> doShootAction(AbstractAircraft)
+}
+class edu.hitsz.factory.BossEnemyFactory {
++ <<Create>> BossEnemyFactory()
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+abstract class edu.hitsz.bullet.AbstractBullet {
+- int power
++ <<Create>> AbstractBullet(int,int,int,int,int)
++ void vanish()
++ void forward()
++ int getPower()
+}
+class edu.hitsz.factory.EliteEnemyFactory {
++ <<Create>> EliteEnemyFactory()
++ AbstractEnemyAircraft createEnemyAircraft(int,int,int,int,int)
+}
+class edu.hitsz.aircraft.BossEnemy {
++ <<Create>> BossEnemy(int,int,int,int,int)
++ void vanish()
++ List<AbstractProp> leftProp()
+}
+class edu.hitsz.application.gui.BeginFrame {
+- JPanel mainPanel
+- JButton easyButton
+- JButton nomalButton
+- JButton difficultButton
+- JCheckBox soundCheckBox
+- JLabel nameLabel
+- JLabel soundLabel
+- Map<Boolean,String> soundMap
++ <<Create>> BeginFrame()
+- void setSound()
++ JPanel getMainPanel()
+}
+class edu.hitsz.bullet.HeroBullet {
++ <<Create>> HeroBullet(int,int,int,int,int)
+}
+class edu.hitsz.application.game.NormalGame {
+# void difficultyInitial()
+# void difficultyChangeAction()
+}
+class edu.hitsz.application.HeroController {
+- Game game
+- HeroAircraft heroAircraft
+- MouseAdapter mouseAdapter
++ <<Create>> HeroController(Game,HeroAircraft)
+}
+
+
+java.io.Serializable <|.. edu.hitsz.leaderboard.Round
+edu.hitsz.prop.AbstractProp <|-- edu.hitsz.prop.BulletProp
+edu.hitsz.aircraft.AbstractAircraft <|-- edu.hitsz.aircraft.AbstractEnemyAircraft
+edu.hitsz.aircraft.AbstractEnemyAircraft <|-- edu.hitsz.aircraft.EliteEnemy
+edu.hitsz.application.game.Game <|-- edu.hitsz.application.game.DifficultGame
+edu.hitsz.basic.AbstractFlyingObject <|-- edu.hitsz.aircraft.AbstractAircraft
+edu.hitsz.strategy.Shoot <|.. edu.hitsz.strategy.NullShoot
+edu.hitsz.basic.AbstractFlyingObject <|-- edu.hitsz.prop.AbstractProp
+edu.hitsz.bullet.AbstractBullet <|-- edu.hitsz.bullet.EnemyBullet
+edu.hitsz.factory.PropFactory <|.. edu.hitsz.factory.BombPropFactory
+edu.hitsz.prop.AbstractProp <|-- edu.hitsz.prop.BombProp
+edu.hitsz.factory.BulletFactory <|.. edu.hitsz.factory.HeroBulletFactory
+edu.hitsz.prop.AbstractProp <|-- edu.hitsz.prop.BloodProp
+edu.hitsz.aircraft.AbstractAircraft <|-- edu.hitsz.aircraft.HeroAircraft
+edu.hitsz.application.music.Thread <|-- edu.hitsz.application.music.MusicThread
+edu.hitsz.factory.EnemyFactory <|-- edu.hitsz.factory.MobEnemyFactory
+edu.hitsz.factory.BulletFactory <|.. edu.hitsz.factory.EnemyBulletFactory
+edu.hitsz.application.music.MusicThread <|-- edu.hitsz.application.music.LoopMusicThread
+edu.hitsz.aircraft.AbstractEnemyAircraft <|-- edu.hitsz.aircraft.MobEnemy
+edu.hitsz.application.game.JPanel <|-- edu.hitsz.application.game.Game
+edu.hitsz.application.game.Game <|-- edu.hitsz.application.game.EasyGame
+edu.hitsz.factory.PropFactory <|.. edu.hitsz.factory.BulletPropFactory
+edu.hitsz.strategy.Shoot <|.. edu.hitsz.strategy.StraightShoot
+edu.hitsz.factory.PropFactory <|.. edu.hitsz.factory.BloodPropFactory
+edu.hitsz.leaderboard.dao.RoundDao <|.. edu.hitsz.leaderboard.dao.RoundDaoImpl
+edu.hitsz.strategy.Shoot <|.. edu.hitsz.strategy.ScatterShoot
+edu.hitsz.factory.EnemyFactory <|-- edu.hitsz.factory.BossEnemyFactory
+edu.hitsz.basic.AbstractFlyingObject <|-- edu.hitsz.bullet.AbstractBullet
+edu.hitsz.factory.EnemyFactory <|-- edu.hitsz.factory.EliteEnemyFactory
+edu.hitsz.aircraft.AbstractEnemyAircraft <|-- edu.hitsz.aircraft.BossEnemy
+edu.hitsz.bullet.AbstractBullet <|-- edu.hitsz.bullet.HeroBullet
+edu.hitsz.application.game.Game <|-- edu.hitsz.application.game.NormalGame
+@enduml

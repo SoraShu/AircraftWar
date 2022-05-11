@@ -1,0 +1,36 @@
+@startuml
+abstract class Game {
+
+# EnemyFactory mobEnemyFactory
+# EnemyFactory eliteEnemyFactory
+# EnemyFactory bossEnemyFactory
+# int createDuration
+# int enemyShootDuration
+# int heroShootDuration
+# int difficultyChangeDuration
+# int enemyMaxNumber
+# int bossScoreThreshold
+# {abstract}void difficultyChangeAction()
+# {abstract}void difficultyInitial()
+...
+...()
+}
+class EasyGame {
+# void difficultyInitial()
+# void difficultyChangeAction()
+}
+class DifficultGame {
+# void difficultyInitial()
+# void difficultyChangeAction()
+}
+class NormalGame {
+# void difficultyInitial()
+# void difficultyChangeAction()
+}
+
+
+JPanel <|-- Game
+Game <|-- EasyGame
+Game <|-- DifficultGame
+Game <|-- NormalGame
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+abstract class AbstractFlyingObject {
++ void onBombHandle()
+}
+class BombProp {
+- List<AbstractBullet> enemyBullets
+- List<AbstractEnemyAircraft> enemyAircrafts
+- List<AbstractFlyingObject> subscribers
+- void addSubscriber(AbstractFlyingObject)
+- void addSubscriberByList(List<? extends AbstractFlyingObject>)
+- void removeSubscriber(AbstractFlyingObject)
+- void unsubscribeAll()
+- void notifyAllSubscribers()
++ void takeEffect(HeroAircraft)
+}
+BombProp o--> AbstractFlyingObject
+@enduml
