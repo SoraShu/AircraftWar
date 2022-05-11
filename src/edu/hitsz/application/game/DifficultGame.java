@@ -12,6 +12,14 @@ public class DifficultGame extends Game {
         System.out.println("diff up!");
         mobEnemyFactory.changeHp(0.01);
         eliteEnemyFactory.changeHp(0.1);
+        enemyMaxNumber += 1;
+        if (createDuration >= 100) {
+            createDuration = (int) (createDuration / 1.1);
+        }
+        if (enemyShootDuration > 100) {
+            enemyShootDuration = (int) (enemyShootDuration / 1.05);
+        }
     }
+
 
 }
